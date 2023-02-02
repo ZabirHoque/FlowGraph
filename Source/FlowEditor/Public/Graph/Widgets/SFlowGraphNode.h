@@ -50,7 +50,12 @@ protected:
 	FLinearColor GetNodeTitleTextColor() const;
 	TSharedPtr<SWidget> GetEnabledStateWidget() const;
 
-	virtual void CreateStandardPinWidget(UEdGraphPin* Pin) override;
+	//-----------------------------------------------------------------------------
+	// Torbie Begin Change
+	// Removed CreateStandardPinWidget();
+	// Torbie End Change
+	//-----------------------------------------------------------------------------
+
 	virtual TSharedPtr<SToolTip> GetComplexTooltip() override;
 
 	virtual void CreateInputSideAddButton(TSharedPtr<SVerticalBox> OutputBox) override;

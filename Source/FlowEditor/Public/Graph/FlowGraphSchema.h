@@ -10,9 +10,14 @@ class UFlowNode;
 
 DECLARE_MULTICAST_DELEGATE(FFlowGraphSchemaRefresh);
 
+//-----------------------------------------------------------------------------
+// Torbie Begin Change
 UCLASS()
-class FLOWEDITOR_API UFlowGraphSchema : public UEdGraphSchema
+class FLOWEDITOR_API UFlowGraphSchema : public UEdGraphSchema_K2
 {
+// Torbie End Change
+//-----------------------------------------------------------------------------
+
 	GENERATED_UCLASS_BODY()
 
 	friend class UFlowGraph;

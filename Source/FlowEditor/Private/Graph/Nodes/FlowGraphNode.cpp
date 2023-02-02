@@ -368,6 +368,15 @@ void UFlowGraphNode::AllocateDefaultPins()
 		{
 			CreateOutputPin(OutputPin);
 		}
+
+		//-----------------------------------------------------------------------------
+		// Torbie Begin Change
+		for (const FFlowExposedParam& exposedParam : ExposedParams)
+		{
+			CreateExposedParamPin(exposedParam);
+		}
+		// Torbie End Change
+		//-----------------------------------------------------------------------------
 	}
 }
 
@@ -801,6 +810,73 @@ void UFlowGraphNode::CreateOutputPin(const FFlowPin& FlowPin, const int32 Index 
 
 	OutputPins.Emplace(NewPin);
 }
+
+//-----------------------------------------------------------------------------
+// Torbie Begin Change
+void UFlowGraphNode::CreateExposedParamPin(
+	const FFlowExposedParam& exposedParam
+	)
+{
+	if (exposedParam.Name.IsNone())
+	{
+		return;
+	}
+
+	bool bIsInputPin  = exposedParam.ExposeAsPinType == EFlowExposeAsPinType::In  || exposedParam.ExposeAsPinType == EFlowExposeAsPinType::InOut;
+	bool bIsOutputPin = exposedParam.ExposeAsPinType == EFlowExposeAsPinType::Out || exposedParam.ExposeAsPinType == EFlowExposeAsPinType::InOut;
+
+	auto* schema = Cast<UFlowGraphSchema>(GetSchema());
+	if (!schema)
+	{
+		return;
+	}
+
+	FProperty* exposedProperty = GetFlowNode()->GetClass()->FindPropertyByName(exposedParam.Name);
+	if (!exposedProperty)
+	{
+		return;
+	}
+
+	if (bIsInputPin)
+	{
+		FEdGraphPinType PinType;
+		schema->ConvertPropertyToPinType(exposedProperty, PinType);
+
+		UEdGraphPin* NewPin = CreatePin(EGPD_Input, PinType, exposedParam.Name);
+		check(NewPin);
+
+		if (!exposedParam.FriendlyName.IsEmpty())
+		{
+			NewPin->bAllowFriendlyName = true;
+			NewPin->PinFriendlyName    = exposedParam.FriendlyName;
+		}
+
+		NewPin->PinToolTip = exposedParam.ToolTip;
+
+		InputPins.Emplace(NewPin);
+	}
+
+	if (bIsOutputPin)
+	{
+		FEdGraphPinType PinType;
+		schema->ConvertPropertyToPinType(exposedProperty, PinType);
+
+		UEdGraphPin* NewPin = CreatePin(EGPD_Output, PinType, exposedParam.Name);
+		check(NewPin);
+
+		if (!exposedParam.FriendlyName.IsEmpty())
+		{
+			NewPin->bAllowFriendlyName = true;
+			NewPin->PinFriendlyName    = exposedParam.FriendlyName;
+		}
+
+		NewPin->PinToolTip = exposedParam.ToolTip;
+
+		OutputPins.Emplace(NewPin);
+	}
+}
+// Torbie End Change
+//-----------------------------------------------------------------------------
 
 void UFlowGraphNode::RemoveOrphanedPin(UEdGraphPin* Pin)
 {

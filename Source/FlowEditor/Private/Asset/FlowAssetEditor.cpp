@@ -18,6 +18,11 @@
 #include "FlowAsset.h"
 #include "Nodes/FlowNode.h"
 #include "Nodes/Route/FlowNode_SubGraph.h"
+//-----------------------------------------------------------------------------
+// Torbie Begin Change
+#include "DetailCustomizations/FlowAssetDetailPropertyExtension.h"
+// Torbie End Change
+//-----------------------------------------------------------------------------
 
 #include "EdGraphUtilities.h"
 #include "EdGraph/EdGraphNode.h"
@@ -257,6 +262,15 @@ void FFlowAssetEditor::InitFlowAssetEditor(const EToolkitMode::Type Mode, const 
 
 	BindGraphCommands();
 	CreateWidgets();
+
+	//-----------------------------------------------------------------------------
+	// Torbie Begin Change
+	if (UFlowGraphEditorSettings::Get()->bAllowNodeVariablesExposedAsPins)
+	{
+		DetailsView->SetExtensionHandler(MakeShared<FFlowAssetDetailPropertyExtension>());	
+	}
+	// Torbie End Change
+	//-----------------------------------------------------------------------------
 
 	FlowAsset->OnRuntimeMessageAdded().AddSP(this, &FFlowAssetEditor::OnRuntimeMessageAdded);
 	FEditorDelegates::BeginPIE.AddSP(this, &FFlowAssetEditor::OnBeginPIE);

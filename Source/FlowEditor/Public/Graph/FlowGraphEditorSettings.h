@@ -45,4 +45,12 @@ class FLOWEDITOR_API UFlowGraphEditorSettings : public UDeveloperSettings
 
 	UPROPERTY(EditAnywhere, config, Category = "Wires")
 	bool bHighlightOutputWiresOfSelectedNodes;
+
+	//-----------------------------------------------------------------------------
+	// Torbie Begin Change
+	/* Allows exposing member variables of flow nodes as pins within the flow graph. */
+	UPROPERTY(Config, EditAnywhere, Category = "Wires")
+	bool bAllowNodeVariablesExposedAsPins = true;
+	// Torbie End Change
+	//-----------------------------------------------------------------------------
 };

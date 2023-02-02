@@ -20,6 +20,19 @@ class UFlowSubsystem;
 DECLARE_DELEGATE(FFlowNodeEvent);
 #endif
 
+//-----------------------------------------------------------------------------
+// Torbie Begin Change
+UENUM()
+enum class EFlowExposeAsPinType : uint8
+{
+	None,
+	In,
+	Out,
+	InOut,
+};
+// Torbie End Change
+//-----------------------------------------------------------------------------
+
 /**
  * A Flow Node is UObject-based node designed to handle entire gameplay feature within single node.
  */
@@ -34,6 +47,11 @@ class FLOW_API UFlowNode : public UObject, public IVisualLoggerDebugSnapshotInte
 	friend class UFlowGraphSchema;
 	friend class SFlowInputPinHandle;
 	friend class SFlowOutputPinHandle;
+	//-----------------------------------------------------------------------------
+	// Torbie Begin Change
+	friend class FFlowGraphPinFactory;
+	// Torbie End Change
+	//-----------------------------------------------------------------------------
 
 //////////////////////////////////////////////////////////////////////////
 // Node

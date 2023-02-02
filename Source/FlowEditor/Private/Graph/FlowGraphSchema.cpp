@@ -105,6 +105,15 @@ const FPinConnectionResponse UFlowGraphSchema::CanCreateConnection(const UEdGrap
 		return FPinConnectionResponse(CONNECT_RESPONSE_DISALLOW, TEXT("Cannot make new connections to orphaned pin"));
 	}
 
+	//-----------------------------------------------------------------------------
+	// Torbie Begin Change
+	if (!ArePinsCompatible(PinA, PinB))
+	{
+		return FPinConnectionResponse(CONNECT_RESPONSE_DISALLOW, TEXT("Cannot make new connection between unrelated types"));
+	}
+	// Torbie End Change
+	//-----------------------------------------------------------------------------
+
 	// Compare the directions
 	const UEdGraphPin* InputPin = nullptr;
 	const UEdGraphPin* OutputPin = nullptr;
@@ -143,7 +152,16 @@ bool UFlowGraphSchema::ShouldHidePinDefaultValue(UEdGraphPin* Pin) const
 
 FLinearColor UFlowGraphSchema::GetPinTypeColor(const FEdGraphPinType& PinType) const
 {
-	return FLinearColor::White;
+	//-----------------------------------------------------------------------------
+	// Torbie Begin Change
+	if (PinType.PinCategory == UEdGraphSchema_K2::PC_Exec)
+	{
+		return FLinearColor::White;
+	}
+
+	return GetDefault<UEdGraphSchema_K2>()->GetPinTypeColor(PinType);
+	// Torbie End Change
+	//-----------------------------------------------------------------------------
 }
 
 void UFlowGraphSchema::BreakNodeLinks(UEdGraphNode& TargetNode) const

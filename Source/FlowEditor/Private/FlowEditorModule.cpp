@@ -26,6 +26,11 @@
 #include "Nodes/Route/FlowNode_CustomOutput.h"
 #include "Nodes/World/FlowNode_ComponentObserver.h"
 #include "Nodes/World/FlowNode_PlayLevelSequence.h"
+//-----------------------------------------------------------------------------
+// Torbie Begin Change
+#include "Graph/FlowGraphPinFactory.h"
+// Torbie End Change
+//-----------------------------------------------------------------------------
 
 #include "AssetToolsModule.h"
 #include "EdGraphUtilities.h"
@@ -50,6 +55,11 @@ void FFlowEditorModule::StartupModule()
 
 	// register visual utilities
 	FEdGraphUtilities::RegisterVisualPinConnectionFactory(MakeShareable(new FFlowGraphConnectionDrawingPolicyFactory));
+	//-----------------------------------------------------------------------------
+	// Torbie Begin Change
+	FEdGraphUtilities::RegisterVisualPinFactory(MakeShared<FFlowGraphPinFactory>());
+	// Torbie End Change
+	//-----------------------------------------------------------------------------
 	FEdGraphUtilities::RegisterVisualPinFactory(MakeShareable(new FFlowInputPinHandleFactory()));
 	FEdGraphUtilities::RegisterVisualPinFactory(MakeShareable(new FFlowOutputPinHandleFactory()));
 

@@ -519,30 +519,11 @@ TSharedPtr<SWidget> SFlowGraphNode::GetEnabledStateWidget() const
 	return TSharedPtr<SWidget>();
 }
 
-void SFlowGraphNode::CreateStandardPinWidget(UEdGraphPin* Pin)
-{
-	const TSharedPtr<SGraphPin> NewPin = SNew(SFlowGraphPinExec, Pin);
-
-	if (!UFlowGraphSettings::Get()->bShowDefaultPinNames && FlowGraphNode->GetFlowNode())
-	{
-		if (Pin->Direction == EGPD_Input)
-		{
-			if (FlowGraphNode->GetFlowNode()->GetInputPins().Num() == 1 && Pin->PinName == UFlowNode::DefaultInputPin.PinName)
-			{
-				NewPin->SetShowLabel(false);
-			}
-		}
-		else
-		{
-			if (FlowGraphNode->GetFlowNode()->GetOutputPins().Num() == 1 && Pin->PinName == UFlowNode::DefaultOutputPin.PinName)
-			{
-				NewPin->SetShowLabel(false);
-			}
-		}
-	}
-
-	this->AddPin(NewPin.ToSharedRef());
-}
+//-----------------------------------------------------------------------------
+// Torbie Begin Change
+// Removed CreateStandardPinWidget();
+// Torbie End Change
+//-----------------------------------------------------------------------------
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 

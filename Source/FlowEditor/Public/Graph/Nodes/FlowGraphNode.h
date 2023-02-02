@@ -12,6 +12,11 @@
 
 class UEdGraphSchema;
 
+//-----------------------------------------------------------------------------
+// Torbie Begin Change
+enum class EFlowExposeAsPinType : uint8;
+// Torbie End Change
+//-----------------------------------------------------------------------------
 class UFlowNode;
 
 USTRUCT()
@@ -46,6 +51,33 @@ struct FLOWEDITOR_API FFlowBreakpoint
 };
 
 DECLARE_DELEGATE(FFlowGraphNodeEvent);
+
+//-----------------------------------------------------------------------------
+// Torbie Begin Change
+struct FFlowExposedParam
+{
+	FName                Name;
+	FText                FriendlyName;
+	FString				 ToolTip;
+	int32				 Offset = -1;
+	EFlowExposeAsPinType ExposeAsPinType;
+
+	FFlowExposedParam(
+		) = default;
+
+	FFlowExposedParam(
+		FName InName,
+		EFlowExposeAsPinType InExposedAsPinType,
+		int32 InOffset
+		)
+		: Name(InName)
+		, Offset(InOffset)
+		, ExposeAsPinType(InExposedAsPinType)
+	{
+	}
+};
+// Torbie End Change
+//-----------------------------------------------------------------------------
 
 /**
  * Graph representation of the Flow Node
@@ -173,6 +205,14 @@ public:
 
 //////////////////////////////////////////////////////////////////////////
 // Pins
+
+	//-----------------------------------------------------------------------------
+	// Torbie Begin Change
+	TArray<FFlowExposedParam> ExposedParams;
+
+	void CreateExposedParamPin(const FFlowExposedParam& exposedParam);
+	// Torbie End Change
+	//-----------------------------------------------------------------------------
 
 public:
 	TArray<UEdGraphPin*> InputPins;

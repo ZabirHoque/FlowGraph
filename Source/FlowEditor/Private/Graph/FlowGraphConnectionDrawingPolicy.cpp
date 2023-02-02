@@ -142,10 +142,14 @@ void FFlowGraphConnectionDrawingPolicy::DetermineWiringStyle(UEdGraphPin* Output
 
 		if (InputPin)
 		{
+			//-----------------------------------------------------------------------------
+			// Torbie Begin Change
+			bool bIsExec = InputPin->PinType.PinCategory == UEdGraphSchema_K2::PC_Exec;
+
 			// selected paths
 			if (SelectedPaths.Contains(OutputPin) || SelectedPaths.Contains(InputPin))
 			{
-				Params.WireColor = SelectedColor;
+				Params.WireColor = bIsExec ? SelectedColor : Params.WireColor;
 				Params.WireThickness = SelectedWireThickness;
 				Params.bDrawBubbles = false;
 				return;
@@ -154,7 +158,7 @@ void FFlowGraphConnectionDrawingPolicy::DetermineWiringStyle(UEdGraphPin* Output
 			// recent paths
 			if (RecentPaths.Contains(OutputPin) && RecentPaths[OutputPin] == InputPin)
 			{
-				Params.WireColor = RecentColor;
+				Params.WireColor = bIsExec ? RecentColor : Params.WireColor;
 				Params.WireThickness = RecentWireThickness;
 				Params.bDrawBubbles = true;
 				return;
@@ -163,15 +167,17 @@ void FFlowGraphConnectionDrawingPolicy::DetermineWiringStyle(UEdGraphPin* Output
 			// all paths, showing graph history
 			if (RecordedPaths.Contains(OutputPin) && RecordedPaths[OutputPin] == InputPin)
 			{
-				Params.WireColor = RecordedColor;
+				Params.WireColor = bIsExec ? RecordedColor : Params.WireColor;
 				Params.WireThickness = RecordedWireThickness;
 				Params.bDrawBubbles = false;
 				return;
 			}
 
 			// It's not followed, fade it and keep it thin
-			Params.WireColor = InactiveColor;
+			Params.WireColor *= InactiveColor;
 			Params.WireThickness = InactiveWireThickness;
+			// Torbie End Change
+			//-----------------------------------------------------------------------------
 		}
 	}
 
