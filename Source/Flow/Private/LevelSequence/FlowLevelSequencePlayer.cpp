@@ -3,6 +3,11 @@
 #include "LevelSequence/FlowLevelSequencePlayer.h"
 #include "LevelSequence/FlowLevelSequenceActor.h"
 #include "Nodes/FlowNode.h"
+//-----------------------------------------------------------------------------
+// Torbie Begin Change
+#include "EngineUtils.h"
+// Torbie End Change
+//-----------------------------------------------------------------------------
 
 #include "DefaultLevelSequenceInstanceData.h"
 #include "Runtime/Launch/Resources/Version.h"
@@ -36,6 +41,21 @@ UFlowLevelSequencePlayer* UFlowLevelSequencePlayer::CreateFlowLevelSequencePlaye
 	{
 		return nullptr;
 	}
+
+    //-----------------------------------------------------------------------------
+    // Torbie Begin Change
+	for (TActorIterator<AFlowLevelSequenceActor> It(World, AFlowLevelSequenceActor::StaticClass()); It; ++It)
+	{
+		AFlowLevelSequenceActor* ExistingActor = *It;
+		if (ExistingActor->LevelSequenceAsset == LevelSequence)
+		{
+			// Sequence Actor already exists
+			OutActor = ExistingActor;
+			return Cast<UFlowLevelSequencePlayer>(ExistingActor->SequencePlayer);
+		}
+	}
+    // Torbie End Change
+    //-----------------------------------------------------------------------------
 
 	// Sequence Actor might be spawned exactly where playback happens
 	FTransform SpawnTransform = FTransform::Identity;

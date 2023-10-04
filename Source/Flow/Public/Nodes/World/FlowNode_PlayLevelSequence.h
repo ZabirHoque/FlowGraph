@@ -11,6 +11,11 @@
 #include "FlowNode_PlayLevelSequence.generated.h"
 
 class UFlowLevelSequencePlayer;
+//-----------------------------------------------------------------------------
+// Torbie Begin Change
+class ALevelSequenceActorActor;
+// Torbie End Change
+//-----------------------------------------------------------------------------
 
 DECLARE_MULTICAST_DELEGATE(FFlowNodeLevelSequenceEvent);
 
@@ -68,6 +73,13 @@ protected:
 
 	UPROPERTY()
 	UFlowLevelSequencePlayer* SequencePlayer;
+
+    //-----------------------------------------------------------------------------
+    // Torbie Begin Change
+	UPROPERTY()
+	ALevelSequenceActor* SequenceActor = nullptr;
+    // Torbie End Change
+    //-----------------------------------------------------------------------------
 
 	// Play Rate set by the user in PlaybackSettings
 	float CachedPlayRate;
