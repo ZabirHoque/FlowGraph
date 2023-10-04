@@ -136,7 +136,10 @@ void UFlowNode_PlayLevelSequence::CreatePlayer()
 	LoadedSequence = Sequence.LoadSynchronous();
 	if (LoadedSequence)
 	{
-		ALevelSequenceActor* SequenceActor;
+        //-----------------------------------------------------------------------------
+        // Torbie Begin Change
+        // Torbie End Change
+        //-----------------------------------------------------------------------------
 
 		AActor* OwningActor = TryGetRootFlowActorOwner();
 
@@ -290,6 +293,16 @@ void UFlowNode_PlayLevelSequence::Cleanup()
 		}
 		SequencePlayer = nullptr;
 	}
+
+    //-----------------------------------------------------------------------------
+    // Torbie Begin Change
+	if (SequenceActor)
+	{
+		SequenceActor->Destroy();
+		SequenceActor = nullptr;
+	}
+    // Torbie End Change
+    //-----------------------------------------------------------------------------
 
 	LoadedSequence = nullptr;
 	StartTime = 0.0f;
