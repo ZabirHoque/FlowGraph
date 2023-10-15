@@ -377,6 +377,15 @@ void UFlowSubsystem::LoadRootFlow(UObject* Owner, UFlowAsset* FlowAsset, const F
 		return;
 	}
 
+	//-------------------------------------------------------------------------
+	// Torbie Begin Change
+	if (LoadedSaveGame == nullptr)
+	{
+		return;
+	}
+	// Torbie End Change
+	//-------------------------------------------------------------------------
+
 	for (const FFlowAssetSaveData& AssetRecord : LoadedSaveGame->FlowInstances)
 	{
 		if (AssetRecord.InstanceName == SavedAssetInstanceName
