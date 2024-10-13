@@ -11,6 +11,11 @@
 #include "FlowNode_PlayLevelSequence.generated.h"
 
 class UFlowLevelSequencePlayer;
+//-----------------------------------------------------------------------------
+// Torbie Begin Change
+class ALevelSequenceActorActor;
+// Torbie End Change
+//-----------------------------------------------------------------------------
 
 DECLARE_MULTICAST_DELEGATE(FFlowNodeLevelSequenceEvent);
 
